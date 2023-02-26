@@ -25,7 +25,14 @@ struct list_head *q_new()
 }
 
 /* Free all storage used by queue */
-void q_free(struct list_head *l) {}
+void q_free(struct list_head *l)
+{
+    element_t *pos, *next;
+    list_for_each_entry_safe (pos, next, l, list) {
+        free(container_of(&pos->list, element_t, list));
+    }
+    free(l);
+}
 
 /* Insert an element at head of queue */
 bool q_insert_head(struct list_head *head, char *s)
@@ -56,15 +63,11 @@ int q_size(struct list_head *head)
 {
     if (!head)
         return 0;
-
     int len = 0;
     struct list_head *li;
-
     list_for_each (li, head)
         len++;
     return len;
-
-    return -1;
 }
 
 /* Delete the middle node in queue */
