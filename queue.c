@@ -41,9 +41,13 @@ bool q_insert_head(struct list_head *head, char *s)
     if (!head || !s)
         return false;
     element_t *n = malloc(1 * sizeof(element_t));
-    char *value = malloc((strlen(s) + 1) * sizeof(char));
-    if (!n || !value)
+    if (!n)
         return false;
+    char *value = malloc((strlen(s) + 1) * sizeof(char));
+    if (!value) {
+        free(n);
+        return false;
+    }
     memcpy(value, s, strlen(s) + 1);
     n->value = value;
     list_add(&n->list, head);
