@@ -269,10 +269,6 @@ int q_descend(struct list_head *head)
     if (!head || list_empty(head))
         return 0;
 
-    if (q_size(head) == 1) {
-        return 1;
-    }
-
     struct list_head *curr = head->prev;
     while (curr->prev != head) {
         if (strcmp(list_entry(curr, element_t, list)->value,
