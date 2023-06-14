@@ -213,8 +213,52 @@ void q_reverseK(struct list_head *head, int k)
     }
 }
 
+
+void mergeTwoLists(struct list_head *L1, struct list_head *L2)
+{
+    if (!L1 || !L2)
+        return;
+
+    struct list_head *Lnode = L1->next, *Rnode = L2->next;
+
+    while (Lnode != L1 && Rnode != L2) {
+        if (strcmp(list_entry(Lnode, element_t, list)->value,
+                   list_entry(Rnode, element_t, list)->value) > 0) {
+            struct list_head *tmp = Rnode->next;
+            list_move_tail(Rnode, Lnode);
+            Rnode = tmp;
+        } else {
+            Lnode = Lnode->next;
+        }
+    }
+
+    if (q_size(L2) != 0) {
+        list_splice_tail(L2, L1);
+    }
+}
+
 /* Sort elements of queue in ascending order */
-void q_sort(struct list_head *head) {}
+void q_sort(struct list_head *head)
+{
+    if (!head || list_empty(head) || q_size(head) == 1)
+        return;
+
+    struct list_head *tmp, *mid;
+    tmp = head->next;
+    mid = head->prev;
+
+    while (tmp != mid && mid->prev != tmp) {
+        tmp = tmp->next;
+        mid = mid->prev;
+    }
+
+    LIST_HEAD(right);
+    list_cut_position(&right, head, mid->prev);
+
+    q_sort(head);
+    q_sort(&right);
+    mergeTwoLists(head, &right);
+}
 
 /* Remove every node which has a node with a strictly greater value anywhere to
  * the right side of it */
