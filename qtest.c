@@ -1,4 +1,5 @@
 /* Implementation of testing code for queue code */
+#define _POSIX_C_SOURCE 199309L
 
 #include <assert.h>
 #include <errno.h>
@@ -22,6 +23,9 @@
 #include "dudect/fixture.h"
 #include "list.h"
 #include "random.h"
+
+/* Sort algorithm, q_sort or list_sort */
+extern int algo;
 
 /* Shannon entropy */
 extern double shannon_entropy(const uint8_t *input_data);
