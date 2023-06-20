@@ -24,6 +24,8 @@
 #include "list.h"
 #include "random.h"
 
+#include "list_sort.h"
+
 /* Sort algorithm, q_sort or list_sort */
 extern int algo;
 
@@ -601,8 +603,12 @@ bool do_sort(int argc, char *argv[])
     error_check();
 
     set_noallocate_mode(true);
-    if (current && exception_setup(true))
-        q_sort(current->q);
+    if (current && exception_setup(true)) {
+        if (algo == 0)
+            q_sort(current->q);
+        else
+            list_sort(current->q);
+    }
     exception_cancel();
     set_noallocate_mode(false);
 
